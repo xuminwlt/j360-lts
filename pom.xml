@@ -14,6 +14,7 @@
         <module>j360-tasktracker</module>
         <module>j360-nettyserver</module>
         <module>j360-nettyclient</module>
+        <module>j360-lts-common</module>
     </modules>
 
     <properties>

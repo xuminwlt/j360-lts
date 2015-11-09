@@ -1,0 +1,2 @@
+adaptive=me.j360.lts.common.extension.factory.AdaptiveExtensionFactory
+spi=me.j360.lts.common.extension.factory.SpiExtensionFactory

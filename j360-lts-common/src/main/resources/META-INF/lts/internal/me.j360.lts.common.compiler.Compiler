@@ -1,0 +1,3 @@
+adaptive=me.j360.lts.common.compiler.support.AdaptiveCompiler
+jdk=me.j360.lts.common.compiler.support.JdkCompiler
+javassist=me.j360.lts.common.compiler.support.JavassistCompiler

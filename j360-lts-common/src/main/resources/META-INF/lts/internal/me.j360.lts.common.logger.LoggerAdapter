@@ -1,0 +1,4 @@
+slf4j=me.j360.lts.common.logger.slf4j.Slf4jLoggerAdapter
+jcl=me.j360.lts.common.logger.jcl.JclLoggerAdapter
+log4j=me.j360.lts.common.logger.log4j.Log4jLoggerAdapter
+jdk=me.j360.lts.common.logger.jdk.JdkLoggerAdapter
