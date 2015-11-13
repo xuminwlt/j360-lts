@@ -15,7 +15,7 @@ public class LogTest {
 
     @Test
     public void logTest(){
-        System.setProperty("lts.logger","jcl");
+        System.setProperty("lts.logger","jdk");
         Logger logger = LoggerFactory.getLogger(LogTest.class);
 
         logger.info("hello world");
