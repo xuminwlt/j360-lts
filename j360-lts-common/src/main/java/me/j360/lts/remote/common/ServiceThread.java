@@ -1,8 +1,8 @@
 package me.j360.lts.remote.common;
 
-import com.lts.core.logger.Logger;
-import com.lts.core.logger.LoggerFactory;
 
+import me.j360.lts.common.logger.Logger;
+import me.j360.lts.common.logger.LoggerFactory;
 
 /**
  * 后台服务线程基类
