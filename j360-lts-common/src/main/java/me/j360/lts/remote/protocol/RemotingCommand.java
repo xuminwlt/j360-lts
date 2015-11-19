@@ -1,7 +1,7 @@
 package me.j360.lts.remote.protocol;
 
-import com.lts.core.commons.utils.JSONUtils;
-import com.lts.remoting.RemotingCommandBody;
+import me.j360.lts.common.utils.JSONUtils;
+import me.j360.lts.remote.RemotingCommandBody;
 
 import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicInteger;

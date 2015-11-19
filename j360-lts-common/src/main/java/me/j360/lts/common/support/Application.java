@@ -1,6 +1,7 @@
 package me.j360.lts.common.support;
 
 
+import me.j360.lts.common.cluster.SubscribedNodeManager;
 import me.j360.lts.ec.EventCenter;
 
 /**
@@ -31,5 +32,17 @@ public abstract class Application {
 
     // 事件中心
     private EventCenter eventCenter;
+
+
+    public SubscribedNodeManager getSubscribedNodeManager() {
+        return subscribedNodeManager;
+    }
+
+    public void setSubscribedNodeManager(SubscribedNodeManager subscribedNodeManager) {
+        this.subscribedNodeManager = subscribedNodeManager;
+    }
+
+    // 节点管理
+    private SubscribedNodeManager subscribedNodeManager;
 
 }

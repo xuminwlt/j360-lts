@@ -1,6 +1,7 @@
 package me.j360.lts.common.support;
 
 
+import me.j360.lts.common.cluster.NodeType;
 import me.j360.lts.common.compiler.support.AdaptiveCompiler;
 import me.j360.lts.common.constant.Constants;
 import me.j360.lts.common.utils.JSONUtils;
@@ -24,8 +25,17 @@ public class Config implements Serializable {
     private String identity;
     // 工作线程, 目前只对 TaskTracker 有效
     private int workThreads;
+
+    public NodeType getNodeType() {
+        return nodeType;
+    }
+
+    public void setNodeType(NodeType nodeType) {
+        this.nodeType = nodeType;
+    }
+
     // 节点类型
-    //private NodeType nodeType;
+    private NodeType nodeType;
     // 注册中心 地址
     private String registryAddress;
     // 远程连接超时时间
