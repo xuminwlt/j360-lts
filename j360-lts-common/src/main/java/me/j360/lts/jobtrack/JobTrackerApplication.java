@@ -1,9 +1,9 @@
-package me.j360.lts.common.test.remote.server;
+package me.j360.lts.jobtrack;
 
 import me.j360.lts.biz.logger.JobLogger;
 import me.j360.lts.common.remoting.RemotingServerDelegate;
 import me.j360.lts.common.support.Application;
-import me.j360.lts.common.test.remote.server.channel.ChannelManager;
+import me.j360.lts.jobtrack.channel.ChannelManager;
 
 /**
  * JobTracker Application

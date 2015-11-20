@@ -1,8 +1,11 @@
 package me.j360.lts.common.support;
 
 
+import me.j360.lts.command.CommandCenter;
 import me.j360.lts.common.cluster.SubscribedNodeManager;
 import me.j360.lts.ec.EventCenter;
+import me.j360.lts.jobtrack.id.IdGenerator;
+import me.j360.lts.jobtrack.support.JobReceiver;
 import me.j360.lts.remote.protocol.CommandBodyWrapper;
 
 /**
@@ -57,4 +60,36 @@ public abstract class Application {
     // 节点管理
     private SubscribedNodeManager subscribedNodeManager;
 
+    public CommandCenter getCommandCenter() {
+        return commandCenter;
+    }
+
+    public void setCommandCenter(CommandCenter commandCenter) {
+        this.commandCenter = commandCenter;
+    }
+
+    // 命令中心
+    private CommandCenter commandCenter;
+
+
+    public IdGenerator getIdGenerator() {
+        return idGenerator;
+    }
+
+    public void setIdGenerator(IdGenerator idGenerator) {
+        this.idGenerator = idGenerator;
+    }
+
+    public JobReceiver getJobReceiver() {
+        return jobReceiver;
+    }
+
+    public void setJobReceiver(JobReceiver jobReceiver) {
+        this.jobReceiver = jobReceiver;
+    }
+
+    // job id generator
+    private IdGenerator idGenerator;
+
+    private JobReceiver jobReceiver;
 }

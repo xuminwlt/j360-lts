@@ -1,6 +1,7 @@
 package me.j360.lts.common.test.remote.server;
 
 import me.j360.lts.common.protocol.JobProtos;
+import me.j360.lts.jobtrack.JobTrackerApplication;
 import me.j360.lts.remote.Channel;
 import me.j360.lts.remote.exception.RemotingCommandException;
 import me.j360.lts.remote.protocol.RemotingCommand;

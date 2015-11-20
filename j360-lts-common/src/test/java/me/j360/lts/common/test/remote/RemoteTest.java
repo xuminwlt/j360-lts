@@ -1,5 +1,7 @@
 package me.j360.lts.common.test.remote;
 
+import me.j360.lts.command.CommandCenter;
+import me.j360.lts.command.Commands;
 import me.j360.lts.common.cluster.Node;
 import me.j360.lts.common.cluster.NodeType;
 import me.j360.lts.common.cluster.SubscribedNodeManager;
@@ -17,7 +19,7 @@ import me.j360.lts.common.test.remote.client.JobClientApplication;
 import me.j360.lts.common.test.remote.client.RemotingDispatcher;
 import me.j360.lts.common.test.remote.client.Response;
 import me.j360.lts.common.test.remote.client.SubmitCallback;
-import me.j360.lts.common.test.remote.server.JobTrackerApplication;
+import me.j360.lts.jobtrack.JobTrackerApplication;
 import me.j360.lts.common.utils.NamedThreadFactory;
 import me.j360.lts.common.utils.StringUtils;
 import me.j360.lts.ec.EventCenter;
@@ -25,6 +27,9 @@ import me.j360.lts.ec.EventInfo;
 import me.j360.lts.ec.EventSubscriber;
 import me.j360.lts.ec.Observer;
 import me.j360.lts.ec.injvm.InJvmEventCenterFactory;
+import me.j360.lts.jobtrack.channel.ChannelManager;
+import me.j360.lts.jobtrack.command.AddJobCommand;
+import me.j360.lts.jobtrack.command.LoadJobCommand;
 import me.j360.lts.remote.*;
 import me.j360.lts.remote.protocol.CommandBodyWrapper;
 import com.lts.core.protocol.command.JobSubmitRequest;
@@ -153,9 +158,20 @@ public class RemoteTest {
     @Test
     public void serverRemoteTest(){
         Config config = new Config();
-        config.setListenPort(50001);
+        config.setListenPort(35001);
         JobTrackerApplication application = new JobTrackerApplication();
         application.setConfig(config);
+
+        // 监控中心
+        //application.setMonitor(new JobTrackerMonitor(application));
+        // channel 管理者
+        application.setChannelManager(new ChannelManager());
+        // JobClient 管理者
+        //application.setJobClientManager(new JobClientManager(application));
+        // TaskTracker 管理者
+        //application.setTaskTrackerManager(new TaskTrackerManager(application));
+        // 命令中心
+        application.setCommandCenter(new CommandCenter(application.getConfig()));
 
         RemotingServerConfig remotingServerConfig = new RemotingServerConfig();
         // config 配置
@@ -167,8 +183,20 @@ public class RemoteTest {
 
         RemotingServerDelegate remotingServer = new RemotingServerDelegate(remotingTransporter.getRemotingServer(config, remotingServerConfig), application);
 
-        remotingServer.start();
+        //register start
+        application.getCommandCenter().start();
 
+
+        // 设置command端口，会暴露到注册中心上
+        //node.setCommandPort(application.getCommandCenter().getPort());
+        // 手动加载任务
+        application.getCommandCenter().registerCommand(Commands.LOAD_JOB, new LoadJobCommand(application));
+        // 添加任务
+        application.getCommandCenter().registerCommand(Commands.ADD_JOB, new AddJobCommand(application));
+
+        //remote start
+
+        remotingServer.start();
         RemotingProcessor defaultProcessor = new me.j360.lts.common.test.remote.server.RemotingDispatcher(application);
         if (defaultProcessor != null) {
             int processorSize = config.getParameter(Constants.PROCESSOR_THREAD, Constants.DEFAULT_PROCESSOR_THREAD);
@@ -176,9 +204,12 @@ public class RemoteTest {
                     Executors.newFixedThreadPool(processorSize, new NamedThreadFactory(RemoteTest.class.getSimpleName())));
         }
 
-        //
-        RemotingCommand requestCommand = RemotingCommand.createResponseCommand(1);
-        //remotingServer.invokeSync(null,null)
+
+        //after remote start
+        application.getChannelManager().start();
+        //application.getMonitor().start();
+
+
     }
 
 

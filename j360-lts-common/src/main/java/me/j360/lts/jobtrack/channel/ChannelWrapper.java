@@ -1,4 +1,4 @@
-package me.j360.lts.common.test.remote.server.channel;
+package me.j360.lts.jobtrack.channel;
 
 import me.j360.lts.common.cluster.NodeType;
 import me.j360.lts.remote.Channel;
