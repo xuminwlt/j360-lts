@@ -1,0 +1,4 @@
+adaptive=me.j360.lts.remote.serialize.AdaptiveSerializable
+fastjson=me.j360.lts.remote.serialize.FastJsonSerializable
+hessian2=me.j360.lts.remote.serialize.Hessian2Serializable
+java=me.j360.lts.remote.serialize.JavaSerializable

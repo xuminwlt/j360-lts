@@ -2,14 +2,18 @@ package me.j360.lts.remote.netty;
 
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
+import me.j360.lts.common.logger.Logger;
+import me.j360.lts.common.logger.LoggerFactory;
 import me.j360.lts.remote.ChannelHandler;
 import me.j360.lts.remote.ChannelHandlerListener;
 import me.j360.lts.remote.Future;
+import me.j360.lts.remote.common.RemotingHelper;
 
 /**
  * @author Robert HG (254963746@qq.com) on 11/3/15.
  */
 public class NettyChannelHandler implements ChannelHandler {
+    protected static final Logger LOGGER = LoggerFactory.getLogger(NettyChannelHandler.class);
 
     private ChannelFuture channelFuture;
 
@@ -26,11 +30,14 @@ public class NettyChannelHandler implements ChannelHandler {
                 listener.operationComplete(new Future() {
                     @Override
                     public boolean isSuccess() {
+                        LOGGER.debug("isSuccess");
+
                         return future.isSuccess();
                     }
 
                     @Override
                     public Throwable cause() {
+                        LOGGER.error("Throwable cause");
                         return future.cause();
                     }
                 });

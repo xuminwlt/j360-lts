@@ -235,9 +235,12 @@ public abstract class AbstractRemoting {
             final ResponseFuture responseFuture =
                     new ResponseFuture(request.getOpaque(), timeoutMillis, null, null);
             this.responseTable.put(request.getOpaque(), responseFuture);
+
+            //此处必须要返回responseFuture，否则失败
             channel.writeAndFlush(request).addListener(new ChannelHandlerListener() {
                 @Override
                 public void operationComplete(Future future) throws Exception {
+                    LOGGER.debug("game over");
                     if (future.isSuccess()) {
                         responseFuture.setSendRequestOK(true);
                         return;
@@ -251,6 +254,8 @@ public abstract class AbstractRemoting {
                     LOGGER.warn("send a request command to channel <" + channel.remoteAddress() + "> failed.");
                     LOGGER.warn(request.toString());
                 }
+
+
             });
 
             RemotingCommand responseCommand = responseFuture.waitResponse(timeoutMillis);

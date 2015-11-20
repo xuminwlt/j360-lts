@@ -3,6 +3,7 @@ package me.j360.lts.common.support;
 
 import me.j360.lts.common.cluster.SubscribedNodeManager;
 import me.j360.lts.ec.EventCenter;
+import me.j360.lts.remote.protocol.CommandBodyWrapper;
 
 /**
  * @author Robert HG (254963746@qq.com) on 8/17/14.
@@ -13,6 +14,17 @@ public abstract class Application {
     // 节点配置信息
     private Config config;
 
+
+    public CommandBodyWrapper getCommandBodyWrapper() {
+        return commandBodyWrapper;
+    }
+
+    public void setCommandBodyWrapper(CommandBodyWrapper commandBodyWrapper) {
+        this.commandBodyWrapper = commandBodyWrapper;
+    }
+
+    // 节点通信CommandBody包装器
+    private CommandBodyWrapper commandBodyWrapper;
 
     public Config getConfig() {
         return config;
