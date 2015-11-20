@@ -27,16 +27,14 @@ import me.j360.lts.ec.Observer;
 import me.j360.lts.ec.injvm.InJvmEventCenterFactory;
 import me.j360.lts.remote.*;
 import me.j360.lts.remote.protocol.CommandBodyWrapper;
-import me.j360.lts.remote.protocol.JobSubmitRequest;
-import me.j360.lts.remote.protocol.JobSubmitResponse;
+import com.lts.core.protocol.command.JobSubmitRequest;
+import com.lts.core.protocol.command.JobSubmitResponse;
 import me.j360.lts.remote.protocol.RemotingCommand;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created with j360-lts -> me.j360.lts.common.test.remote.
@@ -46,6 +44,7 @@ import java.util.concurrent.TimeUnit;
  * 说明：
  */
 public class RemoteTest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RemoteTest.class);
 
     protected RemotingTransporter remotingTransporter = ExtensionLoader
             .getExtensionLoader(RemotingTransporter.class).getAdaptiveExtension();
@@ -54,6 +53,12 @@ public class RemoteTest {
     @Test
     public void clientRemoteTest() throws JobTrackerNotFoundException {
         Config config = new Config();
+        config.setNodeType(NodeType.JOB_CLIENT);
+        config.setNodeGroup("test_jobClient");
+        config.setClusterName("test_cluster");
+        config.setIdentity(StringUtils.generateUUID());
+        config.setInvokeTimeoutMillis(60000);
+
         JobClientApplication application = new JobClientApplication();
         application.setConfig(config);
 
@@ -95,15 +100,18 @@ public class RemoteTest {
 
         remotingClient.addJobTracker(jobTracker);
 
-        //发送
+        //封装job
         Job job = new Job();
         job.setTaskId(StringUtils.generateUUID());
-        job.setTaskTrackerNodeGroup("test_trade_TaskTracker_1");
+        job.setTaskTrackerNodeGroup("test_trade_TaskTracker_0");
         job.setParam("shopId", "111");
         job.setNeedFeedback(false);
 
+        application.setCommandBodyWrapper(new CommandBodyWrapper(config));
+
         final List<Job> jobs = Collections.singletonList(job);
 
+        //nettyclient发送job到jobtrack（Node jobTracker）==nettyserver
         final Response response = new Response();
         try {
             JobSubmitRequest jobSubmitRequest = CommandBodyWrapper.wrapper(application, new JobSubmitRequest());
@@ -118,12 +126,11 @@ public class RemoteTest {
                     if (responseCommand == null) {
                         response.setFailedJobs(jobs);
                         response.setSuccess(false);
-                        //LOGGER.warn("Submit job failed: {}, {}", jobs, "JobTracker is broken");
+                        LOGGER.warn("Submit job failed: {}, {}", jobs, "JobTracker is broken");
                         return;
                     }
-
                     if (JobProtos.ResponseCode.JOB_RECEIVE_SUCCESS.code() == responseCommand.getCode()) {
-                        //LOGGER.info("Submit job success: {}", jobs);
+                        LOGGER.info("Submit job success: {}", jobs);
                         response.setSuccess(true);
                         return;
                     }
@@ -132,14 +139,13 @@ public class RemoteTest {
                     response.setFailedJobs(jobSubmitResponse.getFailedJobs());
                     response.setSuccess(false);
                     response.setCode(JobProtos.ResponseCode.valueOf(responseCommand.getCode()).name());
-                    //LOGGER.warn("Submit job failed: {}, {}, {}", jobs, responseCommand.getRemark(), jobSubmitResponse.getMsg());
+                    LOGGER.warn("Submit job failed: {}, {}, {}", jobs, responseCommand.getRemark(), jobSubmitResponse.getMsg());
                 }
             };
 
             submitCallback.call(remotingClient.invokeSync(requestCommand));
-
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            LOGGER.error(e);
         }
     }
 

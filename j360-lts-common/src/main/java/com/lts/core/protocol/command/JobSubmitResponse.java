@@ -1,4 +1,4 @@
-package me.j360.lts.remote.protocol;
+package com.lts.core.protocol.command;
 
 
 import me.j360.lts.common.protocol.AbstractRemotingCommandBody;
