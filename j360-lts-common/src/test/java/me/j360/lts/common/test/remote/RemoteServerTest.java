@@ -105,7 +105,7 @@ public class RemoteServerTest {
         application.setJobLogger(new JobLoggerDelegate(config));
         application.setPreLoader(preLoaderFactory.getPreLoader(config, application));
 
-        //register CommandCenter start
+        //register CommandCenter start ->>> 命令行中心 ServerSocket
         application.getCommandCenter().start();
 
         // 设置command端口，会暴露到注册中心上
