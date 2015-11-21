@@ -4,6 +4,7 @@ import me.j360.lts.biz.logger.JobLogger;
 import me.j360.lts.common.remoting.RemotingServerDelegate;
 import me.j360.lts.common.support.Application;
 import me.j360.lts.jobtrack.channel.ChannelManager;
+import me.j360.lts.queue.PreLoader;
 
 /**
  * JobTracker Application
@@ -46,4 +47,13 @@ public class JobTrackerApplication extends Application {
         this.channelManager = channelManager;
     }
 
+    public PreLoader getPreLoader() {
+        return preLoader;
+    }
+
+    public void setPreLoader(PreLoader preLoader) {
+        this.preLoader = preLoader;
+    }
+
+    private PreLoader preLoader;
 }

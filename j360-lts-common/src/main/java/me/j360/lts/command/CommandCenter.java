@@ -80,10 +80,9 @@ public class CommandCenter {
         new Thread(new Runnable() {
             @Override
             public void run() {
-
+                System.out.println(start.get());
                 while (start.get()) {
                     Socket socket = null;
-
                     try {
                         socket = serverSocket.accept();
                         if (socket == null) {
