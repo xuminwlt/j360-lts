@@ -3,6 +3,7 @@ package me.j360.lts.common.support;
 
 import me.j360.lts.command.CommandCenter;
 import me.j360.lts.common.cluster.SubscribedNodeManager;
+import me.j360.lts.common.register.RegistryStatMonitor;
 import me.j360.lts.ec.EventCenter;
 import me.j360.lts.jobtrack.id.IdGenerator;
 import me.j360.lts.jobtrack.support.JobReceiver;
@@ -17,6 +18,16 @@ public abstract class Application {
     // 节点配置信息
     private Config config;
 
+    public RegistryStatMonitor getRegistryStatMonitor() {
+        return registryStatMonitor;
+    }
+
+    public void setRegistryStatMonitor(RegistryStatMonitor registryStatMonitor) {
+        this.registryStatMonitor = registryStatMonitor;
+    }
+
+    // 注册中心状态监控
+    private RegistryStatMonitor registryStatMonitor;
 
     public CommandBodyWrapper getCommandBodyWrapper() {
         return commandBodyWrapper;

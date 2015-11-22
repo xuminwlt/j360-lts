@@ -1,0 +1,2 @@
+zkclient=me.j360.lts.common.zookeeper.zkclient.ZkClientZookeeperTransporter
+curator=me.j360.lts.common.zookeeper.curator.CuratorZookeeperTransporter
