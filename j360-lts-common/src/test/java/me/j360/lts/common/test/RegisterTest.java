@@ -29,11 +29,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class RegisterTest {
     public static void main(String[] args){
+        EventCenterFactory eventCenterFactory = ExtensionLoader
+                .getExtensionLoader(EventCenterFactory.class).getAdaptiveExtension();
+
         JobClientApplication application = new JobClientApplication();
         Config config = new Config();
+        config.setRegistryAddress("zookeeper://192.168.247.128:2181");
         application.setConfig(config);
         List<NodeChangeListener> nodeChangeListeners = new ArrayList<NodeChangeListener>();
         //masterChangeListeners = new ArrayList<MasterChangeListener>();
+        application.setRegistryStatMonitor(new RegistryStatMonitor(application));
+        application.setEventCenter(eventCenterFactory.getEventCenter(config));
 
         ZookeeperRegistry registry = new ZookeeperRegistry(application);
         Node node = new Node();
@@ -43,8 +49,6 @@ public class RegisterTest {
     }
 
     private List<NodeChangeListener> nodeChangeListeners;
-    private EventCenterFactory eventCenterFactory = ExtensionLoader
-            .getExtensionLoader(EventCenterFactory.class).getAdaptiveExtension();
     protected RemotingTransporter remotingTransporter = ExtensionLoader
             .getExtensionLoader(RemotingTransporter.class).getAdaptiveExtension();
     private AtomicBoolean started = new AtomicBoolean(false);
