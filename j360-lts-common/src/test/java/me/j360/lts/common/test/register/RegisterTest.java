@@ -1,4 +1,4 @@
-package me.j360.lts.common.test;
+package me.j360.lts.common.test.register;
 
 import me.j360.lts.common.cluster.Node;
 import me.j360.lts.common.extension.ExtensionLoader;
